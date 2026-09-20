@@ -6,7 +6,7 @@ cd "$PROJECT_ROOT"
 
 PYTHON_BIN="${PYTHON_BIN:-python3}"
 
-mkdir -p data/raw data/processed
+mkdir -p src/data/raw src/data/processed
 
 "$PYTHON_BIN" src/scripts/load_hc3.py
 "$PYTHON_BIN" src/scripts/clean_hc3_data.py
