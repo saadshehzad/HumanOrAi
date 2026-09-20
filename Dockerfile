@@ -8,9 +8,6 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY run_hc3_pipeline.sh .
-RUN chmod +x run_hc3_pipeline.sh
-
 COPY src ./src
 
 EXPOSE 8000
