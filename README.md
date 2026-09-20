@@ -48,6 +48,8 @@ docker run --rm -it -p 8000:8000 -v "$PWD":/app -w /app humanorai
 
 This starts the API on port 8000.
 
+For the data pipeline, the image must be built before running the pipeline command below. The HC3 loader uses the dataset repository's custom loading code and explicitly enables it with `trust_remote_code=True`.
+
 ## Data Pipeline
 
 The HC3 data pipeline is a separate command and should be run only when you want to prepare or refresh the dataset.
@@ -62,7 +64,15 @@ chmod +x run_hc3_pipeline.sh
 Inside Docker:
 
 ```bash
+docker build -t humanorai .
 docker run --rm -it -v "$PWD":/app -w /app humanorai bash ./run_hc3_pipeline.sh
+```
+
+Hugging Face authentication is optional. Without a token, the pipeline uses unauthenticated requests and may be subject to lower download limits. To authenticate, set `HF_TOKEN` before running the container:
+
+```bash
+export HF_TOKEN=your_token_here
+docker run --rm -it -e HF_TOKEN -v "$PWD":/app -w /app humanorai bash ./run_hc3_pipeline.sh
 ```
 
 This script executes, in order:
