@@ -37,21 +37,40 @@ The workflow is built around the following stages:
 │   │   └── split_hc3_data.py
 ```
 
+## Docker Usage
+
+The container starts the FastAPI app by default when you run the image.
+
+```bash
+docker build -t humanorai .
+docker run --rm -it -p 8000:8000 -v "$PWD":/app -w /app humanorai
+```
+
+This starts the API on port 8000.
+
 ## Data Pipeline
 
-Run the dataset pipeline from the project root:
+The HC3 data pipeline is a separate command and should be run only when you want to prepare or refresh the dataset.
+
+From the project root:
 
 ```bash
 chmod +x run_hc3_pipeline.sh
 ./run_hc3_pipeline.sh
 ```
 
+Inside Docker:
+
+```bash
+docker run --rm -it -v "$PWD":/app -w /app humanorai bash ./run_hc3_pipeline.sh
+```
+
 This script executes, in order:
 
 ```bash
-python src/scripts/load_hc3.py
-python src/scripts/clean_hc3_data.py
-python src/scripts/split_hc3_data.py
+python3 src/scripts/load_hc3.py
+python3 src/scripts/clean_hc3_data.py
+python3 src/scripts/split_hc3_data.py
 ```
 
 The processed data ends up in the following folders:
