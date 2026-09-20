@@ -85,11 +85,21 @@ python3 src/scripts/split_hc3_data.py
 
 The processed data ends up in the following folders:
 
-- `data/raw/hc3` for the downloaded raw dataset
-- `data/processed/hc3` for cleaned data
-- `data/processed/hc3/train`
-- `data/processed/hc3/validation`
-- `data/processed/hc3/test`
+- `src/data/raw/hc3` for the downloaded raw dataset
+- `src/data/processed/hc3` for cleaned data
+- `src/data/processed/hc3/train`
+- `src/data/processed/hc3/validation`
+- `src/data/processed/hc3/test`
+
+To verify that the pipeline completed:
+
+```bash
+find src/data -maxdepth 3 -type f
+```
+
+When running the pipeline in Docker, keep `-v "$PWD":/app` in the command. This bind mount saves the downloaded and processed data in the project folder on the host instead of leaving it inside the temporary container.
+
+The HC3 loader uses `trust_remote_code=True` because the dataset requires custom loading code. Use this only with the trusted HC3 repository; do not enable it for arbitrary dataset repositories.
 
 ## Scripts
 
