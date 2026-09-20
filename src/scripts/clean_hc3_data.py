@@ -1,6 +1,12 @@
-from datasets import load_from_disk, Dataset
+from pathlib import Path
 
-dataset = load_from_disk("data/raw/hc3")["train"]
+from datasets import ClassLabel, Dataset, load_from_disk
+
+ROOT = Path(__file__).resolve().parents[2]
+RAW_DATASET_PATH = ROOT / "src" / "data" / "raw" / "hc3"
+PROCESSED_DATASET_PATH = ROOT / "src" / "data" / "processed" / "hc3"
+
+dataset = load_from_disk(str(RAW_DATASET_PATH))["train"]
 
 data = []
 seen = set()
@@ -26,8 +32,11 @@ for row in dataset:
             })
             seen.add(text)
 
-clean_dataset = Dataset.from_list(data)
+clean_dataset = Dataset.from_list(data).cast_column(
+    "label",
+    ClassLabel(names=["human", "chatgpt"]),
+)
 
-clean_dataset.save_to_disk("data/processed/hc3")
+clean_dataset.save_to_disk(str(PROCESSED_DATASET_PATH))
 
 print("Clean dataset:", len(clean_dataset))

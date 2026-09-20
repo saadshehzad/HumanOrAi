@@ -3,7 +3,7 @@ from pathlib import Path
 from datasets import load_from_disk
 
 ROOT = Path(__file__).resolve().parents[2]
-PROCESSED_DATA_PATH = ROOT / "data" / "processed" / "hc3"
+PROCESSED_DATA_PATH = ROOT / "src" / "data" / "processed" / "hc3"
 
 dataset = load_from_disk(str(PROCESSED_DATA_PATH))
 
