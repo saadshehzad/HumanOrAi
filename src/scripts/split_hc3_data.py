@@ -1,6 +1,11 @@
+from pathlib import Path
+
 from datasets import load_from_disk
 
-dataset = load_from_disk("data/processed/hc3")
+ROOT = Path(__file__).resolve().parents[2]
+PROCESSED_DATA_PATH = ROOT / "data" / "processed" / "hc3"
+
+dataset = load_from_disk(str(PROCESSED_DATA_PATH))
 
 train_test = dataset.train_test_split(
     test_size=0.2,
@@ -18,9 +23,9 @@ train = train_test["train"]
 validation = validation_test["train"]
 test = validation_test["test"]
 
-train.save_to_disk("data/processed/hc3/train")
-validation.save_to_disk("data/processed/hc3/validation")
-test.save_to_disk("data/processed/hc3/test")
+train.save_to_disk(str(PROCESSED_DATA_PATH / "train"))
+validation.save_to_disk(str(PROCESSED_DATA_PATH / "validation"))
+test.save_to_disk(str(PROCESSED_DATA_PATH / "test"))
 
 print("Train:", len(train))
 print("Validation:", len(validation))
