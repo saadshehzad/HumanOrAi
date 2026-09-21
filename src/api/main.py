@@ -1,6 +1,7 @@
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.templating import Jinja2Templates
 from src.scripts.clean_hc3_data import clean_hc3_data
 from src.scripts.load_hc3 import load_hc3
 from src.scripts.split_hc3_data import split_hc3_data
@@ -8,12 +9,13 @@ from src.scripts.split_hc3_data import split_hc3_data
 
 app = FastAPI(title="HumanOrAI API", version="0.1.0")
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+templates = Jinja2Templates(directory=str(PROJECT_ROOT / "templates"))
 
+@app.get("/")
+def home(request: Request):
+	context = {"request": request, "title": "HumanOrAI"}
+	return templates.TemplateResponse("index.html", context)
 
-
-@app.get("/predict")
-def predict() -> dict[str, str]:
-	return {"message": "Hello, World!"}
 
 
 @app.get("/pipeline")
