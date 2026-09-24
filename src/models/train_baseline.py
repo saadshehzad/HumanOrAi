@@ -23,8 +23,7 @@ X_train_tfidf = vectorizer.fit_transform(X_train)
 X_validation_tfidf = vectorizer.transform(X_validation)
 
 
-
-model = LogisticRegression(max_iter=1000)
+model = LogisticRegression(max_iter=1000, solver="liblinear")
 
 model.fit(X_train_tfidf, y_train)
 
