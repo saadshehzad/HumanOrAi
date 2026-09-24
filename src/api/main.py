@@ -11,10 +11,14 @@ app = FastAPI(title="HumanOrAI API", version="0.1.0")
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 templates = Jinja2Templates(directory=str(PROJECT_ROOT / "templates"))
 
-@app.get("/")
-def home(request: Request):
-	context = {"request": request, "title": "HumanOrAI"}
-	return templates.TemplateResponse("index.html", context)
+
+
+@app.get("/predict")
+def predict(text: str = "") -> dict[str, str]:
+	if not text.strip():
+		return {"message": "Please enter some text first."}
+
+	return {"message": "Text received.", "text": text}
 
 
 

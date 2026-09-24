@@ -8,22 +8,59 @@
       body {
         margin: 0;
         font-family: Arial, sans-serif;
-        background: #f4f4f4;
+        background: linear-gradient(135deg, #172554, #0f766e);
+        color: #172033;
+        min-height: 100vh;
       }
 
       main {
-        max-width: 600px;
-        margin: 100px auto;
-        padding: 32px;
-        text-align: center;
-        background: white;
+        box-sizing: border-box;
+        max-width: 1000px;
+        margin: 60px auto;
+        padding: 64px;
+        background: rgba(255, 255, 255, 0.96);
+        border-radius: 16px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+      }
+
+      h1 {
+        margin: 0 0 10px;
+        color: #172554;
+        font-family: Georgia, serif;
+        font-size: 3.2rem;
+        font-weight: 700;
+        line-height: 1.1;
+        letter-spacing: 0;
+        text-shadow: 0 3px 10px rgba(23, 37, 84, 0.16);
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+      }
+
+      textarea {
+        box-sizing: border-box;
+        width: 100%;
+        min-height: 300px;
+        padding: 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+        font: inherit;
+        resize: vertical;
       }
 
       button {
-        padding: 10px 18px;
+        margin-top: 16px;
+        min-width: 180px;
+        padding: 16px 30px;
         border: 0;
-        background: #222;
+        border-radius: 8px;
+        background: #0f766e;
         color: white;
+        font-size: 1.05rem;
+        font-weight: bold;
         cursor: pointer;
       }
 
@@ -32,16 +69,53 @@
       }
 
       #result {
+        min-height: 24px;
         margin-top: 24px;
+        padding: 18px 20px;
+        border-radius: 10px;
+        background: #ecfeff;
+        color: #155e75;
+        font-size: 1.08rem;
+        white-space: pre-wrap;
       }
     </style>
   </head>
   <body>
     <main>
       <h1>{{ title }}</h1>
-      <form action="/predict" method="get">
-        <button type="submit">Predict</button>
-      </form>
+      <p>Enter text to check it with the API.</p>
+      <label for="input-text">Your text</label>
+      <textarea id="input-text" placeholder="Write or paste text here..."></textarea>
+      <button id="predict-button" type="button">Predict</button>
+      <div id="result">Your result will appear here.</div>
     </main>
+    <script>
+      const button = document.getElementById("predict-button");
+      const input = document.getElementById("input-text");
+      const result = document.getElementById("result");
+
+      button.addEventListener("click", async () => {
+        const text = input.value.trim();
+
+        if (!text) {
+          result.textContent = "Please enter some text first.";
+          return;
+        }
+
+        button.disabled = true;
+        result.textContent = "Checking...";
+
+        try {
+          const url = `/predict?text=${encodeURIComponent(text)}`;
+          const response = await fetch(url);
+          const data = await response.json();
+          result.textContent = `${data.message}\n\n${data.text || ""}`;
+        } catch (error) {
+          result.textContent = "Could not connect to the API.";
+        } finally {
+          button.disabled = false;
+        }
+      });
+    </script>
   </body>
 </html>
