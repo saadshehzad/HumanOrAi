@@ -29,7 +29,6 @@ dist/
 # Generated data and model artifacts
 src/data/raw/
 src/data/processed/
-models/
 checkpoints/
 
 # Jupyter
